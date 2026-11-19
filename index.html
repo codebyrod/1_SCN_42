@@ -209,18 +209,134 @@
     border-top:1px solid rgba(242,230,208,.15);padding-top:12px;
   }
 
-  @media print{
-    body{background:#fff}
-    .app{max-width:none;background:#fff}
-    .filters{position:static;box-shadow:none}
-    .day{break-inside:avoid;page-break-inside:avoid}
-    .topbar{display:none}
+  /* ---------- ver mais ---------- */
+  .more{
+    -webkit-appearance:none;appearance:none;background:none;border:0;
+    margin:6px 0 0;padding:6px 0;min-height:32px;cursor:pointer;
+    display:flex;width:fit-content;align-items:center;gap:7px;
+    font:700 11px/1 'Courier New',monospace;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--red-2);
+  }
+  .more::after{
+    content:'';width:6px;height:6px;margin-top:-3px;
+    border-right:2px solid currentColor;border-bottom:2px solid currentColor;
+    transform:rotate(45deg);transition:transform .15s;
+  }
+  .more[aria-expanded="true"]::after{transform:rotate(-135deg);margin-top:3px}
+  .more:focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:2px}
+  @media (pointer:coarse){ .more{min-height:44px} }
+  @media (hover:hover){ .more:hover{color:var(--red)} }
+  .details[hidden]{display:none}
+  .details{
+    margin-top:6px;padding:2px 0 4px 12px;
+    border-left:2px solid var(--gold);
+  }
+  .facts{display:flex;flex-wrap:wrap;gap:6px 18px;margin-bottom:8px}
+  .facts dt{
+    font:700 9.5px/1 'Courier New',monospace;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--red-2);margin-bottom:3px;
+  }
+  .facts dd{
+    font:600 13px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    color:var(--ink);overflow-wrap:anywhere;
+  }
+  .syn{
+    font:400 13.5px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    color:var(--ink-2);overflow-wrap:break-word;
   }
 
+  /* =====================================================
+     RESPONSIVIDADE (apenas HTML + CSS + JS puro)
+     base = celular · 360 · 600 · 860 · 1280
+     ===================================================== */
+
+  /* melhorias gerais */
+  body{padding-left:env(safe-area-inset-left,0);padding-right:env(safe-area-inset-right,0)}
+  .app{min-height:100vh;min-height:100dvh}
+  .act > div{min-width:0}
+  .chip:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+  @media (pointer:coarse){ .chip{min-height:44px} }
+  @media (hover:hover){
+    .chip:not(.active):hover{background:rgba(23,16,12,.08);border-color:var(--ink)}
+    .act:hover{background:rgba(201,160,43,.08)}
+  }
+
+  /* celulares muito estreitos (< 360px) */
+  @media (max-width:359px){
+    .topbar{padding-left:12px;padding-right:12px}
+    .topbar .ttl{font-size:12px}
+    .hero{padding:18px 14px 20px}
+    .hero h1{font-size:26px}
+    .hero .meta{font-size:9.5px;gap:8px}
+    .filters,.days{padding-left:8px;padding-right:8px}
+    .legend{margin-left:8px;margin-right:8px}
+    .day-head{padding:10px 12px}
+    .day-head .dayname{font-size:19px}
+    .act{grid-template-columns:76px 1fr;gap:8px;padding:10px 12px}
+    .act .time{font-size:11px}
+    .act .title{font-size:14px}
+  }
+
+  /* celular grande / paisagem */
   @media (min-width:600px){
-    body{padding:20px 0}
-    .app{border-radius:12px;overflow:hidden;min-height:auto;
+    body{padding-top:20px;padding-bottom:20px}
+    .app{border-radius:12px;overflow:hidden;min-height:auto;max-width:720px;
          box-shadow:0 10px 40px rgba(0,0,0,.25)}
+    .topbar{padding-left:28px;padding-right:28px}
+    .topbar .ttl{font-size:15px}
+    .hero{padding:32px 28px 34px}
+    .hero .eyebrow{font-size:11px}
+    .hero h1{font-size:44px}
+    .hero .meta{font-size:12px}
+    .filters{padding:14px 28px;flex-wrap:wrap;overflow:visible}
+    .days{padding:22px 28px 6px;gap:18px}
+    .act{grid-template-columns:110px 1fr}
+    .act .time{font-size:13px}
+    .act .title{font-size:16px}
+    .legend{margin:12px 28px 32px;padding:20px 22px 18px}
+  }
+
+  /* tablet / desktop: dias em 2 colunas */
+  @media (min-width:860px){
+    .app{max-width:1080px}
+    .topbar,.hero{padding-left:40px;padding-right:40px}
+    .hero{padding-top:44px;padding-bottom:46px}
+    .hero h1{font-size:clamp(44px,5vw,60px);margin-bottom:22px}
+    .filters{padding:16px 40px}
+    .days{
+      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:22px;align-items:start;padding:28px 40px 8px;
+    }
+    .act{grid-template-columns:100px 1fr}
+    .act .time{font-size:12.5px}
+    .act .title{font-size:15.5px}
+    .legend{margin:14px 40px 40px}
+    .legend .note{max-width:70ch}
+  }
+
+  /* telas largas: 3 colunas */
+  @media (min-width:1280px){
+    .app{max-width:1360px}
+    .days{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .act{grid-template-columns:92px 1fr}
+    .act .time{font-size:12px}
+    .act .title{font-size:15px}
+  }
+
+  /* celular em paisagem (pouca altura): barra de filtros não ocupa a tela toda */
+  @media (max-height:480px) and (orientation:landscape){
+    .filters{position:static}
+  }
+
+  @media print{
+    body{background:#fff;padding:0}
+    .app{max-width:none;background:#fff;box-shadow:none;border-radius:0}
+    .filters{position:static;box-shadow:none}
+    .days{display:flex;flex-direction:column}
+    .day{break-inside:avoid;page-break-inside:avoid}
+    .topbar{display:none}
+    .details[hidden]{display:block}
+    .more{display:none}
   }
 </style>
 </head>
@@ -289,6 +405,15 @@
           <div>
             <span class="title">Alma no Olho</span>
             <span class="cat fic"><span class="dot"></span>Curta-metragem de ficção experimental</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-1">Ver mais</button>
+              <div class="details" id="det-1" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>1973</dd></div>
+                  <div><dt>Duração</dt><dd>11 min</dd></div>
+                  <div><dt>Realização</dt><dd>Zózimo Bulbul</dd></div>
+                </dl>
+                <p class="syn">Curta-metragem de 1973, dirigido e estrelado por Zózimo Bulbul, considerado o marco inicial do Cinema Negro no Brasil. A obra é um drama experimental filmado em preto e branco, que utiliza a mímica e a linguagem corporal para narrar a história do povo negro sem diálogos.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="doc">
@@ -296,6 +421,15 @@
           <div>
             <span class="title">Aniceto do Império: Dia de Alforria?</span>
             <span class="cat doc"><span class="dot"></span>Curta-Metragem</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-2">Ver mais</button>
+              <div class="details" id="det-2" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>1981</dd></div>
+                  <div><dt>Duração</dt><dd>13 min</dd></div>
+                  <div><dt>Realização</dt><dd>Zózimo Bulbul</dd></div>
+                </dl>
+                <p class="syn">Curta-metragem documental que acompanha Aniceto Menezes e Silva — estivador, compositor e um dos fundadores da escola de samba Império Serrano — entre o trabalho no porto e suas reflexões sobre samba, memória, cidadania e as contradições da abolição no Brasil.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="doc">
@@ -303,6 +437,15 @@
           <div>
             <span class="title">Meu amigo Fela</span>
             <span class="cat doc"><span class="dot"></span>Longa-Metragem</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-3">Ver mais</button>
+              <div class="details" id="det-3" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2019</dd></div>
+                  <div><dt>Duração</dt><dd>94 min</dd></div>
+                  <div><dt>Realização</dt><dd>Joel Zito Araújo</dd></div>
+                </dl>
+                <p class="syn">Uma nova perspectiva sobre o músico nigeriano Fela Kuti, a fim de contrapor a narrativa mais frequentemente retratada: como um excêntrico ídolo pop africano do gueto. No filme a complexidade da vida de Fela é desvendada através dos olhos e conversas de seu amigo íntimo e biógrafo oficial, o africano-cubano Carlos Moore.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="doc">
@@ -310,6 +453,14 @@
           <div>
             <span class="title">Samba no Trem</span>
             <span class="cat doc"><span class="dot"></span>Curta-Metragem</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-4">Ver mais</button>
+              <div class="details" id="det-4" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2000</dd></div>
+                  <div><dt>Duração</dt><dd>22 min</dd></div>
+                </dl>
+                <p class="syn">Zózimo acompanha sambistas e a celebração do Dia Nacional do Samba no Rio.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="doc">
@@ -317,6 +468,15 @@
           <div>
             <span class="title">Pequena África</span>
             <span class="cat doc"><span class="dot"></span>Curta-Metragem</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-5">Ver mais</button>
+              <div class="details" id="det-5" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2002</dd></div>
+                  <div><dt>Duração</dt><dd>14 min</dd></div>
+                  <div><dt>Realização</dt><dd>Zózimo Bulbul</dd></div>
+                </dl>
+                <p class="syn">Documentário histórico que resgata a memória da região portuária do Rio de Janeiro — abrangendo a Pedra do Sal, o Cais do Valongo e a Saúde — como território fundamental da diáspora africana e berço de expressões culturais como o samba e o candomblé.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="doc">
@@ -324,6 +484,15 @@
           <div>
             <span class="title">Orí</span>
             <span class="cat doc"><span class="dot"></span>Ensaístico</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-6">Ver mais</button>
+              <div class="details" id="det-6" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>1989</dd></div>
+                  <div><dt>Duração</dt><dd>131 min</dd></div>
+                  <div><dt>Realização</dt><dd>Raquel Gerber</dd></div>
+                </dl>
+                <p class="syn">Documentário ensaístico com roteiro e narração de Beatriz Nascimento que articula a trajetória dos movimentos negros brasileiros entre as décadas de 1970 e 1980, a história dos quilombos e as conexões transatlânticas entre Brasil e África a partir do pensamento e da poesia da historiadora narradora.</p>
+              </div>
           </div>
         </div>
       </div>
@@ -343,6 +512,15 @@
           <div>
             <span class="title">Olhos Azuis (Blue Eyed)</span>
             <span class="cat doc"><span class="dot"></span>Documentário</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-7">Ver mais</button>
+              <div class="details" id="det-7" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>1996</dd></div>
+                  <div><dt>Duração</dt><dd>93 min</dd></div>
+                  <div><dt>Realização</dt><dd>Bertram Verhaag</dd></div>
+                </dl>
+                <p class="syn">A obra documenta os experimentos da educadora americana Jane Elliott, que aplica um exercício de discriminação baseado na cor dos olhos. O objetivo é colocar pessoas de olhos azuis na pele de pessoas negras, rotulando-as como uma raça inferior e submetendo-as a ofensas e hostilidades para que sintam na própria pele o sofrimento causado pelo racismo cotidiano. Elliott, uma professora branca de olhos azuis, conduz esse treinamento para demonstrar como o preconceito opera e afeta os indivíduos.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="doc">
@@ -350,6 +528,15 @@
           <div>
             <span class="title">Cais do Valongo: Sangra da Terra</span>
             <span class="cat doc"><span class="dot"></span>Documentário</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-8">Ver mais</button>
+              <div class="details" id="det-8" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2021</dd></div>
+                  <div><dt>Duração</dt><dd>76 min</dd></div>
+                  <div><dt>Realização</dt><dd>Wavá de Carvalho</dd></div>
+                </dl>
+                <p class="syn">Documentário sobre o sítio arqueológico do Cais do Valongo (maior porto de entrada de africanos escravizados nas Américas) e do Cemitério dos Pretos Novos, na Zona Portuária do Rio de Janeiro. Mostra o processo histórico de soterramento da memória negra na cidade e o resgate material e espiritual dessa herança.</p>
+              </div>
           </div>
         </div>
         <div class="period"><span class="label">Tarde</span><span class="line"></span></div>
@@ -358,6 +545,15 @@
           <div>
             <span class="title">Moça</span>
             <span class="cat fic"><span class="dot"></span>Curta-metragem de ficção</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-9">Ver mais</button>
+              <div class="details" id="det-9" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2022</dd></div>
+                  <div><dt>Duração</dt><dd>25 min</dd></div>
+                  <div><dt>Realização</dt><dd>Denis F. Miala</dd></div>
+                </dl>
+                <p class="syn">“Moça” apresenta uma trama com elementos de misticismo, sensualidade, humor e um toque de suspense, retratando uma narrativa angolana rica e complexa.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="doc">
@@ -365,6 +561,15 @@
           <div>
             <span class="title">Frente Negra Brasileira – Cultne</span>
             <span class="cat doc"><span class="dot"></span>Documentário de arquivo</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-10">Ver mais</button>
+              <div class="details" id="det-10" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2011</dd></div>
+                  <div><dt>Duração</dt><dd>17 min</dd></div>
+                  <div><dt>Realização</dt><dd>Acervo Cultne / Dom Filó</dd></div>
+                </dl>
+                <p class="syn">Registro histórico de um encontro intergeracional entre militantes históricos dos anos 1920/1930 (como José Correia Leite) e ativistas da década de 1970. Relata a fundação do jornal <em>O Clarim da Alvorada</em> e da Frente Negra Brasileira (FNB), destacando o papel central do departamento feminino e a importância da memória coletiva.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="fic">
@@ -372,6 +577,15 @@
           <div>
             <span class="title">Uma História de Amor e Fúria</span>
             <span class="cat fic"><span class="dot"></span>Longa-metragem de animação</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-11">Ver mais</button>
+              <div class="details" id="det-11" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2013</dd></div>
+                  <div><dt>Duração</dt><dd>75 min</dd></div>
+                  <div><dt>Realização</dt><dd>Luiz Bolognesi</dd></div>
+                </dl>
+                <p class="syn">Um homem imortal atravessa quase 600 anos da história do Brasil buscando reencontrar o amor de sua vida, Janaína. Sua trajetória passa por quatro fases marcantes do país: as lutas entre indígenas tupinambás e franceses no século XVI, a Revolta da Balaiada no Maranhão oitocentista, o combate à ditadura militar nos anos 1970 e um futuro distópico no ano de 2096, onde o Rio de Janeiro enfrenta uma crise severa pelo acesso à água. Com traços de histórias em quadrinhos e ficção científica, o longa retrata a história do Brasil pelo ponto de vista dos vencidos.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="fic">
@@ -379,6 +593,15 @@
           <div>
             <span class="title">Branco Sai, Preto Fica</span>
             <span class="cat fic"><span class="dot"></span>Docuficção</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-12">Ver mais</button>
+              <div class="details" id="det-12" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2014</dd></div>
+                  <div><dt>Duração</dt><dd>93 min</dd></div>
+                  <div><dt>Realização</dt><dd>Adirley Queirós</dd></div>
+                </dl>
+                <p class="syn">Docuficção ambientada em Ceilândia (DF) que parte da violenta invasão policial ao baile black Quarentão em 1986 para construir uma narrativa afrofuturista e política sobre memória, território periférico e violência de Estado contra corpos negros.</p>
+              </div>
           </div>
         </div>
       </div>
@@ -398,6 +621,14 @@
           <div>
             <span class="title">Matrizes do Samba no Rio de Janeiro</span>
             <span class="cat doc"><span class="dot"></span>Documentário</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-13">Ver mais</button>
+              <div class="details" id="det-13" hidden>
+                <dl class="facts">
+                  <div><dt>Duração</dt><dd>26 min</dd></div>
+                  <div><dt>Realização</dt><dd>Centro Cultural Cartola (hoje Museu do Samba)</dd></div>
+                </dl>
+                <p class="syn">Documentário que traça a história e a identidade do samba carioca desde suas raízes africanas na Pedra do Sal, os zungus e os núcleos de resistência cultural até a consolidação das três matrizes — partido-alto, samba de terreiro e samba-enredo — e sua transmissão pela oralidade nas escolas de samba.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="doc">
@@ -405,6 +636,15 @@
           <div>
             <span class="title">Tia Ciata: A Matriarca do Samba</span>
             <span class="cat doc"><span class="dot"></span>Documentário biográfico</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-14">Ver mais</button>
+              <div class="details" id="det-14" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2017</dd></div>
+                  <div><dt>Duração</dt><dd>26 min</dd></div>
+                  <div><dt>Realização</dt><dd>Mariana Campos e Raquel Beatriz</dd></div>
+                </dl>
+                <p class="syn">Documentário biográfico que recupera a trajetória de Hilária Batista de Almeida, a Tia Ciata. Analisa sua atuação como <em>Iyá Kekerê</em> no terreiro de João Alabá, mediadora cultural entre o candomblé, o carnaval e as elites políticas, liderança religiosa e cultural baiana radicada na Pequena África carioca, cuja casa foi espaço decisivo de acolhimento, resistência negra e nascimento do samba urbano.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="ens">
@@ -412,6 +652,15 @@
           <div>
             <span class="title">O primeiro (e ÚNICO) partido NEGRO no BRASIL</span>
             <span class="cat ens"><span class="dot"></span>Vídeo-ensaio</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-15">Ver mais</button>
+              <div class="details" id="det-15" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2026</dd></div>
+                  <div><dt>Duração</dt><dd>20 min</dd></div>
+                  <div><dt>Realização</dt><dd>Thiago André</dd></div>
+                </dl>
+                <p class="syn">Vídeo-ensaio narrado por Thiago André que contextualiza a trajetória política negra desde a eleição de Monteiro Lopes (1909) até a transformação da Frente Negra Brasileira em partido político oficial em 1936, culminando em sua extinção abrupta pelo golpe do Estado Novo de Getúlio Vargas em 1937.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="doc">
@@ -419,6 +668,15 @@
           <div>
             <span class="title">Kabadio</span>
             <span class="cat doc"><span class="dot"></span>Documentário</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-16">Ver mais</button>
+              <div class="details" id="det-16" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2016</dd></div>
+                  <div><dt>Duração</dt><dd>96 min</dd></div>
+                  <div><dt>Realização</dt><dd>Daniel Leite</dd></div>
+                </dl>
+                <p class="syn">Um mergulho profundo em um novo mundo, cheio de ritos, música, magia, segredos, imagens fascinantes e depoimentos de personagens reais que tentam sobreviver e manter suas tradições, em meio a uma guerra civil e a realidade do contrabando de mercadorias. No coração da Casamansa (região ao sul do Senegal), um pequeno vilarejo muçulmano, uma espécie de ilha mística protegida por guias religiosos chamados de Marabus, e pelo som de tambores, que acendem a fogueira e ditam a sorte de um futuro incerto, onde o misticismo é o único escudo protetor.</p>
+              </div>
           </div>
         </div>
         <div class="period"><span class="label">Tarde</span><span class="line"></span></div>
@@ -427,6 +685,15 @@
           <div>
             <span class="title">Transviar</span>
             <span class="cat doc"><span class="dot"></span>Curta-Metragem</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-17">Ver mais</button>
+              <div class="details" id="det-17" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2021</dd></div>
+                  <div><dt>Duração</dt><dd>15 min</dd></div>
+                  <div><dt>Realização</dt><dd>Maíra Tristão Nogueira</dd></div>
+                </dl>
+                <p class="syn">Carla da Victoria é filha, neta e bisneta de paneleiras de barro. Ela desafia as regras impostas pela sociedade e transforma seu entorno na região dos manguezais de Vitória, no Espírito Santo, enquanto valoriza as tradições locais e familiares.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="fic">
@@ -434,6 +701,15 @@
           <div>
             <span class="title">Rapsódia para o Homem Negro</span>
             <span class="cat fic"><span class="dot"></span>Curta-Metragem</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-18">Ver mais</button>
+              <div class="details" id="det-18" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2015</dd></div>
+                  <div><dt>Duração</dt><dd>25 min</dd></div>
+                  <div><dt>Realização</dt><dd>Gabriel Martins</dd></div>
+                </dl>
+                <p class="syn">Odé é um homem negro. Seu irmão, Luiz, foi espancado até a morte durante um conflito em uma ocupação de Belo Horizonte. O filme utiliza alegorias e simbolismos para contextualizar as relações políticas, raciais, de ancestralidade e urbanização no mais recente cenário político brasileiro.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="doc">
@@ -441,6 +717,15 @@
           <div>
             <span class="title">Retrato da Mestra Makota Valdina</span>
             <span class="cat doc"><span class="dot"></span>Documentário</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-19">Ver mais</button>
+              <div class="details" id="det-19" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2019</dd></div>
+                  <div><dt>Duração</dt><dd>93 min</dd></div>
+                  <div><dt>Realização</dt><dd>Laboratório Audiovisual Saberes Tradicionais (UFMG)</dd></div>
+                </dl>
+                <p class="syn">O documentário registra as vivências, a sabedoria ancestral e a liderança de Makota Valdina (Valdina de Oliveira Pinto), educadora, ativista antirracista e liderança religiosa do Candomblé de nação Angola. No filme, a mestra reflete sobre o uso tradicional de plantas medicinais, a preservação do meio ambiente, as memórias do bairro Engenho Velho da Federação em Salvador, a religiosidade e as lutas do movimento negro no Brasil.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="doc">
@@ -448,6 +733,15 @@
           <div>
             <span class="title">Kbela</span>
             <span class="cat doc"><span class="dot"></span>Ensaio Audiovisual</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-20">Ver mais</button>
+              <div class="details" id="det-20" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2015</dd></div>
+                  <div><dt>Duração</dt><dd>22 min</dd></div>
+                  <div><dt>Realização</dt><dd>Yasmin Thayná</dd></div>
+                </dl>
+                <p class="syn">Um olhar sensível sobre a experiência do racismo vivido cotidianamente por mulheres negras. A descoberta de uma força ancestral que emerge de seus cabelos crespos transcendendo o embranquecimento. Um exercício subjetivo de autorepresentação e empoderamento.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="doc">
@@ -455,6 +749,15 @@
           <div>
             <span class="title">Ilê Ayiê, do Axé Jitolú para o Mundo</span>
             <span class="cat doc"><span class="dot"></span>Documentário</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-21">Ver mais</button>
+              <div class="details" id="det-21" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2014</dd></div>
+                  <div><dt>Duração</dt><dd>56 min</dd></div>
+                  <div><dt>Realização</dt><dd>TVE Bahia</dd></div>
+                </dl>
+                <p class="syn">O documentário ‘Ilê Aiyê - Do Axé Jitolú para o Mundo’ conta, através de depoimentos dos seus fundadores e personalidades artísticas, como as cantoras Margareth Menezes e Daniela Mercury, a história do Ilê Ayê, que antes de ser um bloco propriamente dito, era um grupo de samba formado por amigos que estudavam juntos e eram moradores do bairro da Liberdade, em Salvador.</p>
+              </div>
           </div>
         </div>
       </div>
@@ -474,6 +777,15 @@
           <div>
             <span class="title">A questão racial: da ditadura à democracia</span>
             <span class="cat doc"><span class="dot"></span>Reportagem documental</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-22">Ver mais</button>
+              <div class="details" id="det-22" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2014</dd></div>
+                  <div><dt>Duração</dt><dd>53 min</dd></div>
+                  <div><dt>Realização</dt><dd>TV Brasil</dd></div>
+                </dl>
+                <p class="syn">Reportagem documental (da série Caminhos da Reportagem) que aborda a trajetória do movimento negro brasileiro a partir dos anos 1970 — dos bailes black e blocos afro à criação do Movimento Negro Unificado (MNU), a atuação de figuras como Abdias do Nascimento, as lutas quilombolas e os desafios contra a violência policial e o racismo no período democrático.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="fic">
@@ -481,6 +793,15 @@
           <div>
             <span class="title">O Jardim das Folhas Sagradas</span>
             <span class="cat fic"><span class="dot"></span>Longa-Metragem</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-23">Ver mais</button>
+              <div class="details" id="det-23" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2011</dd></div>
+                  <div><dt>Duração</dt><dd>75 min</dd></div>
+                  <div><dt>Realização</dt><dd>Pola Ribeiro</dd></div>
+                </dl>
+                <p class="syn">Miguel, um bancário negro de classe média em Salvador, começa a ter visões e descobre sua vocação para se tornar um babalorixá. Orientado pelos orixás, ele recebe a missão de construir um novo terreiro de Candomblé em uma área verde preservada da cidade. No entanto, para erguer o espaço sagrado, ele precisa enfrentar o avanço da especulação imobiliária, o racismo religioso, o preconceito social e os conflitos internos da própria comunidade ao tentar conciliar tradição ancestral, preservação ambiental e urbanização.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="reg">
@@ -488,6 +809,15 @@
           <div>
             <span class="title">O Brasil foi feito de rebeliões</span>
             <span class="cat reg"><span class="dot"></span>Doc-Exposição</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-24">Ver mais</button>
+              <div class="details" id="det-24" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2026</dd></div>
+                  <div><dt>Duração</dt><dd>90 min</dd></div>
+                  <div><dt>Realização</dt><dd>Ynaê Lopes dos Santos (BONDE)</dd></div>
+                </dl>
+                <p class="syn">Registro com a historiadora Ynaê Lopes dos Santos sobre a escravidão nas Américas. O foco invertido analisa o sistema escravista a partir da <em>agência</em> e da organização estratégica de homens e mulheres negros (saberes militares africanos, malungos, marronagem e a Revolução do Haiti) na luta contra o racismo estrutural.</p>
+              </div>
           </div>
         </div>
         <div class="period"><span class="label">Tarde</span><span class="line"></span></div>
@@ -496,6 +826,15 @@
           <div>
             <span class="title">A Negação do Brasil</span>
             <span class="cat doc"><span class="dot"></span>Documentário</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-25">Ver mais</button>
+              <div class="details" id="det-25" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2000</dd></div>
+                  <div><dt>Duração</dt><dd>92 min</dd></div>
+                  <div><dt>Realização</dt><dd>Joel Zito Araújo</dd></div>
+                </dl>
+                <p class="syn">Documentário fundamental para discutir representação negra na televisão brasileira, especialmente nas telenovelas.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="fic">
@@ -503,6 +842,15 @@
           <div>
             <span class="title">Lumumba</span>
             <span class="cat fic"><span class="dot"></span>Longa-metragem</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-26">Ver mais</button>
+              <div class="details" id="det-26" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2000</dd></div>
+                  <div><dt>Duração</dt><dd>109 min</dd></div>
+                  <div><dt>Realização</dt><dd>Raoul Peck</dd></div>
+                </dl>
+                <p class="syn">Longa-metragem dramático que retrata a ascensão e a queda de Patrice Lumumba, líder anticolonialista e primeiro primeiro-ministro eleito da República Democrática do Congo após a independência da Bélgica em 1960, culminando em sua deposição e assassinato articulados em um golpe de estado em conluio dos EUA (atráves da CIA), Bélgica e França.</p>
+              </div>
           </div>
         </div>
       </div>
@@ -522,6 +870,15 @@
           <div>
             <span class="title">Orfeu Negro</span>
             <span class="cat fic"><span class="dot"></span>Longa-metragem</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-27">Ver mais</button>
+              <div class="details" id="det-27" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>1959</dd></div>
+                  <div><dt>Duração</dt><dd>107 min</dd></div>
+                  <div><dt>Realização</dt><dd>Marcel Camus</dd></div>
+                </dl>
+                <p class="syn">Longa-metragem dramático e musical (coprodução franco-brasileira ambientada no Rio de Janeiro durante o Carnaval, premiada com a Palma de Ouro em Cannes) que transpõe o mito grego de Orfeu e Eurídice para o cotidiano e a música do morro e das ruas cariocas.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="ens">
@@ -529,6 +886,15 @@
           <div>
             <span class="title">O primeiro (e ÚNICO) partido NEGRO no BRASIL</span>
             <span class="cat ens"><span class="dot"></span>Vídeo-ensaio</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-28">Ver mais</button>
+              <div class="details" id="det-28" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2026</dd></div>
+                  <div><dt>Duração</dt><dd>20 min</dd></div>
+                  <div><dt>Realização</dt><dd>Thiago André</dd></div>
+                </dl>
+                <p class="syn">Vídeo-ensaio narrado por Thiago André que contextualiza a trajetória política negra desde a eleição de Monteiro Lopes (1909) até a transformação da Frente Negra Brasileira em partido político oficial em 1936, culminando em sua extinção abrupta pelo golpe do Estado Novo de Getúlio Vargas em 1937.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="fic">
@@ -536,6 +902,15 @@
           <div>
             <span class="title">Lumumba</span>
             <span class="cat fic"><span class="dot"></span>Longa-metragem</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-29">Ver mais</button>
+              <div class="details" id="det-29" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2000</dd></div>
+                  <div><dt>Duração</dt><dd>109 min</dd></div>
+                  <div><dt>Realização</dt><dd>Raoul Peck</dd></div>
+                </dl>
+                <p class="syn">Longa-metragem dramático que retrata a ascensão e a queda de Patrice Lumumba, líder anticolonialista e primeiro primeiro-ministro eleito da República Democrática do Congo após a independência da Bélgica em 1960, culminando em sua deposição e assassinato articulados em um golpe de estado em conluio dos EUA (atráves da CIA), Bélgica e França.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="ent">
@@ -543,6 +918,15 @@
           <div>
             <span class="title">Pardos: uma identidade em disputa</span>
             <span class="cat ent"><span class="dot"></span>Entrevista</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-30">Ver mais</button>
+              <div class="details" id="det-30" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2025</dd></div>
+                  <div><dt>Duração</dt><dd>46 min</dd></div>
+                  <div><dt>Realização</dt><dd>Brasil de Fato</dd></div>
+                </dl>
+                <p class="syn">Entrevista com a antropóloga Gabriela Bacelar sobre a categoria <em>pardo</em> no Brasil, comissões de heteroidentificação em universidades e concursos, <em>anticolorismo</em>, os apagamentos indígenas nessa classificação e as disputas políticas em torno da autodeclaração e das políticas de ações afirmativas.</p>
+              </div>
           </div>
         </div>
         <div class="period"><span class="label">Tarde</span><span class="line"></span></div>
@@ -551,6 +935,15 @@
           <div>
             <span class="title">Entre Nós e o Mundo</span>
             <span class="cat doc"><span class="dot"></span>Doc-Retrato</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-31">Ver mais</button>
+              <div class="details" id="det-31" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2019</dd></div>
+                  <div><dt>Duração</dt><dd>17 min</dd></div>
+                  <div><dt>Realização</dt><dd>Fábio Rodrigo</dd></div>
+                </dl>
+                <p class="syn">Um retrato emocional do momento de vida de Erika, moradora da Vila Ede. O medo, a dor e a alegria se misturam demais na periferia de São Paulo.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="fic">
@@ -558,6 +951,15 @@
           <div>
             <span class="title">Alma no Olho</span>
             <span class="cat fic"><span class="dot"></span>Curta-metragem</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-32">Ver mais</button>
+              <div class="details" id="det-32" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>1973</dd></div>
+                  <div><dt>Duração</dt><dd>11 min</dd></div>
+                  <div><dt>Realização</dt><dd>Zózimo Bulbul</dd></div>
+                </dl>
+                <p class="syn">Curta-metragem de 1973, dirigido e estrelado por Zózimo Bulbul, considerado o marco inicial do Cinema Negro no Brasil. A obra é um drama experimental filmado em preto e branco, que utiliza a mímica e a linguagem corporal para narrar a história do povo negro sem diálogos.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="doc">
@@ -565,6 +967,15 @@
           <div>
             <span class="title">Aniceto do Império: Dia de Alforria?</span>
             <span class="cat doc"><span class="dot"></span>Curta-Metragem</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-33">Ver mais</button>
+              <div class="details" id="det-33" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>1981</dd></div>
+                  <div><dt>Duração</dt><dd>13 min</dd></div>
+                  <div><dt>Realização</dt><dd>Zózimo Bulbul</dd></div>
+                </dl>
+                <p class="syn">Curta-metragem documental que acompanha Aniceto Menezes e Silva — estivador, compositor e um dos fundadores da escola de samba Império Serrano — entre o trabalho no porto e suas reflexões sobre samba, memória, cidadania e as contradições da abolição no Brasil.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="reg">
@@ -572,6 +983,15 @@
           <div>
             <span class="title">Hitler is Back, And No One Is Telling You</span>
             <span class="cat reg"><span class="dot"></span>Doc-Exposição</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-34">Ver mais</button>
+              <div class="details" id="det-34" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2026</dd></div>
+                  <div><dt>Duração</dt><dd>190 min</dd></div>
+                  <div><dt>Realização</dt><dd>Carlos Moore</dd></div>
+                </dl>
+                <p class="syn">Registro audiovisual no qual o escritor e ativista Carlos Moore reúne memórias históricas, reflexões sobre o tráfico de africanos cativos e figuras como Cheikh Anta Diop, Aimé Césaire, Malcolm X e Fela Kuti para analisar geopolítica, racismo global e o avanço do neofascismo no mundo contemporâneo.</p>
+              </div>
           </div>
         </div>
       </div>
@@ -591,6 +1011,10 @@
           <div>
             <span class="title">Panafricanismo e Marxismo – Kwame Ture e Molefi Kete Asante</span>
             <span class="cat reg"><span class="dot"></span>Debate Histórico</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-35">Ver mais</button>
+              <div class="details" id="det-35" hidden>
+                <p class="syn">Registro de debate em que Kwame Ture discute a história do pan-africanismo, organização de massas e socialismo científico, enquanto Molefi Kete Asante apresenta a perspectiva da afrocentricidade, consciência cultural e agência dos povos africanos.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="doc">
@@ -598,6 +1022,15 @@
           <div>
             <span class="title">Transviar</span>
             <span class="cat doc"><span class="dot"></span>Curta-Metragem</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-36">Ver mais</button>
+              <div class="details" id="det-36" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2021</dd></div>
+                  <div><dt>Duração</dt><dd>13 min</dd></div>
+                  <div><dt>Realização</dt><dd>Maíra Tristão</dd></div>
+                </dl>
+                <p class="syn">Carla nasceu na tradição das paneleiras de barro. Mulher transexual, Carla é filha, neta e bisneta de paneleiras, aprendeu a modelar as panelas como modelou sua identidade. Transviar é sobre romper as regras e sobre os encontros através do manguezal.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="doc">
@@ -605,6 +1038,15 @@
           <div>
             <span class="title">Cheikh Anta Diop: Origem da espécie humana e Civilização egípcia</span>
             <span class="cat doc"><span class="dot"></span>Doc-Entrevista</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-37">Ver mais</button>
+              <div class="details" id="det-37" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>1985</dd></div>
+                  <div><dt>Duração</dt><dd>60 min</dd></div>
+                  <div><dt>Realização</dt><dd>For the People (SCETV)</dd></div>
+                </dl>
+                <p class="syn">Vídeo documental em formato de entrevista dedicado às pesquisas e teses do historiador e antropólogo senegalês Cheikh Anta Diop sobre a origem africana da humanidade e o caráter africano da civilização do antigo Egito.</p>
+              </div>
           </div>
         </div>
         <div class="period"><span class="label">Tarde</span><span class="line"></span></div>
@@ -613,6 +1055,15 @@
           <div>
             <span class="title">Malcolm X</span>
             <span class="cat fic"><span class="dot"></span>Longa-metragem</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-38">Ver mais</button>
+              <div class="details" id="det-38" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>1992</dd></div>
+                  <div><dt>Duração</dt><dd>192 min</dd></div>
+                  <div><dt>Realização</dt><dd>Spike Lee</dd></div>
+                </dl>
+                <p class="syn">Cinebiografia dirigida por Spike Lee estrelada por Denzel Washington. Acompanha toda a trajetória de Malcolm X. Desde de sua infância nascido Malcolm Little até se tornar Al Hajj Malik Al-Shabazz. A cinebiografia cobre sua infância marcada pelo terror da Ku Klux Klan, a juventude no crime, a conversão ao Islã na prisão, a liderança na Nação do Islã, a ruptura política após sua peregrinação a Meca e seu assassinato em 1965.</p>
+              </div>
           </div>
         </div>
       </div>
@@ -632,6 +1083,15 @@
           <div>
             <span class="title">Palmares vive</span>
             <span class="cat doc"><span class="dot"></span>Documentário</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-39">Ver mais</button>
+              <div class="details" id="det-39" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2018</dd></div>
+                  <div><dt>Duração</dt><dd>25 min</dd></div>
+                  <div><dt>Realização</dt><dd>TV Brasil</dd></div>
+                </dl>
+                <p class="syn">Documentário que visita a Serra da Barriga, em União dos Palmares (Alagoas), resgatando a história do Quilombo dos Palmares, a liderança de Zumbi e Dandara e a importância simbólica do território como patrimônio vivo da resistência negra no Brasil.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="reg">
@@ -639,6 +1099,15 @@
           <div>
             <span class="title">Hitler is Back, And No One Is Telling You</span>
             <span class="cat reg"><span class="dot"></span>Doc-Exposição</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-40">Ver mais</button>
+              <div class="details" id="det-40" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2026</dd></div>
+                  <div><dt>Duração</dt><dd>190 min</dd></div>
+                  <div><dt>Realização</dt><dd>Carlos Moore</dd></div>
+                </dl>
+                <p class="syn">Registro audiovisual no qual o escritor e ativista Carlos Moore reúne memórias históricas, reflexões sobre o tráfico de africanos cativos e figuras como Cheikh Anta Diop, Aimé Césaire, Malcolm X e Fela Kuti para analisar geopolítica, racismo global e o avanço do neofascismo no mundo contemporâneo.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="reg">
@@ -646,6 +1115,15 @@
           <div>
             <span class="title">Da Ancestralidade Ao Afrofuturismo</span>
             <span class="cat reg"><span class="dot"></span>Roda de conversa gravada</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-41">Ver mais</button>
+              <div class="details" id="det-41" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2021</dd></div>
+                  <div><dt>Duração</dt><dd>26 min</dd></div>
+                  <div><dt>Realização</dt><dd>Canal Brasil</dd></div>
+                </dl>
+                <p class="syn">Roda de conversa que conecta feminismo negro, mulherismo africana, lugar de fala, filosofia africana e afrofuturismo. Reflete sobre como resgatar tecnologias e saberes ancestrais para projetar futuros em que pessoas negras não apenas sobrevivam, mas protagonizem a construção social e tecnológica.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="reg">
@@ -653,6 +1131,15 @@
           <div>
             <span class="title">(RE)ancestralizar as vozes através das filosofias africanas</span>
             <span class="cat reg"><span class="dot"></span>Doc-Exposição</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-42">Ver mais</button>
+              <div class="details" id="det-42" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2019</dd></div>
+                  <div><dt>Duração</dt><dd>15 min</dd></div>
+                  <div><dt>Realização</dt><dd>Katiúscia Ribeiro</dd></div>
+                </dl>
+                <p class="syn">Katiúscia é doutora em Filosofia Africana pela Universidade Federal do Rio de Janeiro (UFRJ). É a Coordenadora Geral do Laboratório Geru Maã de Africologia e Estudos Ameríndios da mesma universidade (UFRJ) e professora de Filosofia do Direito na Escola de Magistratura do Rio de Janeiro (EMERJ). Tem por comprometimento a reintegração do legado africano à comunidade, por meio da reconexão dos pensamentos africanos na filosofia.</p>
+              </div>
           </div>
         </div>
         <div class="period"><span class="label">Tarde</span><span class="line"></span></div>
@@ -661,6 +1148,15 @@
           <div>
             <span class="title">Dispositivo de Racialidade, com Sueli Carneiro</span>
             <span class="cat reg"><span class="dot"></span>Aula-debate gravada</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-43">Ver mais</button>
+              <div class="details" id="det-43" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2025</dd></div>
+                  <div><dt>Duração</dt><dd>121 min</dd></div>
+                  <div><dt>Realização</dt><dd>Sesc São Paulo</dd></div>
+                </dl>
+                <p class="syn">Aula-debate com a filósofa e ativista Sueli Carneiro sobre sua tese homônima. Ela explica como a racialidade opera como um dispositivo de poder, saber e subjetivação (dialogando com Michel Foucault e Charles Mills), abordando os conceitos de <em>epistemicídio</em>, <em>biopoder</em>, os desafios da Lei 10.639/03, as cotas raciais e a saúde da população negra.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="doc">
@@ -668,6 +1164,15 @@
           <div>
             <span class="title">Cheikh Anta Diop: Origem da espécie humana e Civilização egípcia</span>
             <span class="cat doc"><span class="dot"></span>Doc-Entrevista</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-44">Ver mais</button>
+              <div class="details" id="det-44" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>1985</dd></div>
+                  <div><dt>Duração</dt><dd>60 min</dd></div>
+                  <div><dt>Realização</dt><dd>For the People (SCETV)</dd></div>
+                </dl>
+                <p class="syn">Vídeo documental em formato de entrevista dedicado às pesquisas e teses do historiador e antropólogo senegalês Cheikh Anta Diop sobre a origem africana da humanidade e o caráter africano da civilização do antigo Egito.</p>
+              </div>
           </div>
         </div>
       </div>
@@ -687,6 +1192,15 @@
           <div>
             <span class="title">O Negro da Senzala ao Soul</span>
             <span class="cat doc"><span class="dot"></span>Documentário</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-45">Ver mais</button>
+              <div class="details" id="det-45" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>1977</dd></div>
+                  <div><dt>Duração</dt><dd>45 min</dd></div>
+                  <div><dt>Realização</dt><dd>TV Cultura</dd></div>
+                </dl>
+                <p class="syn">Clássico documentário televisivo brasileiro de 1977 que registra o fenômeno cultural e comportamental do movimento <em>Black Rio</em> e dos bailes soul nos subúrbios cariocas dos anos 1970, conectando estética, música e afirmação da identidade negra no Brasil.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="fic">
@@ -694,6 +1208,14 @@
           <div>
             <span class="title">It’s summer and we’re running out of ice (Watchmen)</span>
             <span class="cat fic"><span class="dot"></span>Episódio de série de ficção</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-46">Ver mais</button>
+              <div class="details" id="det-46" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2019</dd></div>
+                  <div><dt>Duração</dt><dd>60 min</dd></div>
+                </dl>
+                <p class="syn">Episódio de estreia da série <em>Watchmen</em> (2019), explorando tensões raciais históricas e contemporâneas em Tulsa e do episódio que ficou conhecimento como a Destruição da Wall Street Preta.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="ent">
@@ -701,6 +1223,15 @@
           <div>
             <span class="title">Pardos: uma identidade em disputa</span>
             <span class="cat ent"><span class="dot"></span>Entrevista</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-47">Ver mais</button>
+              <div class="details" id="det-47" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2025</dd></div>
+                  <div><dt>Duração</dt><dd>46 min</dd></div>
+                  <div><dt>Realização</dt><dd>Brasil de Fato</dd></div>
+                </dl>
+                <p class="syn">Entrevista com a antropóloga Gabriela Bacelar sobre a categoria <em>pardo</em> no Brasil, comissões de heteroidentificação em universidades e concursos, <em>anticolorismo</em>, os apagamentos indígenas nessa classificação e as disputas políticas em torno da autodeclaração e das políticas de ações afirmativas.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="reg">
@@ -708,6 +1239,15 @@
           <div>
             <span class="title">O Brasil foi feito de rebeliões</span>
             <span class="cat reg"><span class="dot"></span>Doc-Exposição</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-48">Ver mais</button>
+              <div class="details" id="det-48" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2026</dd></div>
+                  <div><dt>Duração</dt><dd>90 min</dd></div>
+                  <div><dt>Realização</dt><dd>Ynaê Lopes dos Santos (BONDE)</dd></div>
+                </dl>
+                <p class="syn">Registro com a historiadora Ynaê Lopes dos Santos sobre a escravidão nas Américas. O foco invertido analisa o sistema escravista a partir da <em>agência</em> e da organização estratégica de homens e mulheres negros (saberes militares africanos, malungos, marronagem e a Revolução do Haiti) na luta contra o racismo estrutural.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="reg">
@@ -715,6 +1255,15 @@
           <div>
             <span class="title">O que querem as Mulheres?</span>
             <span class="cat reg"><span class="dot"></span>Roda de conversa gravada</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-49">Ver mais</button>
+              <div class="details" id="det-49" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2021</dd></div>
+                  <div><dt>Duração</dt><dd>26 min</dd></div>
+                  <div><dt>Realização</dt><dd>Canal Brasil</dd></div>
+                </dl>
+                <p class="syn">Roda de conversa que conecta feminismo negro, mulherismo africana, lugar de fala, filosofia africana e afrofuturismo. Reflete sobre como resgatar tecnologias e saberes ancestrais para projetar futuros em que pessoas negras não apenas sobrevivam, mas protagonizem a construção social e tecnológica.</p>
+              </div>
           </div>
         </div>
         <div class="period"><span class="label">Tarde</span><span class="line"></span></div>
@@ -723,6 +1272,15 @@
           <div>
             <span class="title">Abdias Nascimento: Memórias Negras</span>
             <span class="cat doc"><span class="dot"></span>Documentário biográfico</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-50">Ver mais</button>
+              <div class="details" id="det-50" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2008</dd></div>
+                  <div><dt>Duração</dt><dd>95 min</dd></div>
+                  <div><dt>Realização</dt><dd>Antonio Olavo</dd></div>
+                </dl>
+                <p class="syn">Documentário biográfico que percorre a vida e o pensamento do intelectual, artista plástico, dramaturgo e ativista Abdias Nascimento, um dos mais importantes militantes negros do Brasil, nascido em 1914. Sua atuação política e obra ao longo do século XX são fundamentais para compreender a relevância da população negra na construção da sociedade brasileira. O documentário passa pela Frente Negra Brasileira, a criação do Teatro Experimental do Negro (TEN), o exílio durante a ditadura militar, o contato com os Panteras Negras, a formulação do conceito de <em>Quilombismo</em> e sua atuação como senador da República.</p>
+              </div>
           </div>
         </div>
         <div class="act" data-cat="doc">
@@ -730,6 +1288,15 @@
           <div>
             <span class="title">Meu amigo Fela</span>
             <span class="cat doc"><span class="dot"></span>Longa-Metragem</span>
+              <button class="more" type="button" aria-expanded="false" aria-controls="det-51">Ver mais</button>
+              <div class="details" id="det-51" hidden>
+                <dl class="facts">
+                  <div><dt>Ano</dt><dd>2019</dd></div>
+                  <div><dt>Duração</dt><dd>94 min</dd></div>
+                  <div><dt>Realização</dt><dd>Joel Zito Araújo</dd></div>
+                </dl>
+                <p class="syn">Uma nova perspectiva sobre o músico nigeriano Fela Kuti, a fim de contrapor a narrativa mais frequentemente retratada: como um excêntrico ídolo pop africano do gueto. No filme a complexidade da vida de Fela é desvendada através dos olhos e conversas de seu amigo íntimo e biógrafo oficial, o africano-cubano Carlos Moore.</p>
+              </div>
           </div>
         </div>
         <div class="act special" data-cat="pres">
@@ -792,6 +1359,17 @@
         p.style.display = any ? '' : 'none';
       });
     });
+  });
+
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest ? e.target.closest('.more') : null;
+    if (!btn) return;
+    var panel = document.getElementById(btn.getAttribute('aria-controls'));
+    if (!panel) return;
+    var open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+    btn.textContent = open ? 'Ver mais' : 'Ver menos';
+    panel.hidden = open;
   });
 </script>
 </body>
